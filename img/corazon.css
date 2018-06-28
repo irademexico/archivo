@@ -1,0 +1,27 @@
+.cuore{
+	width: 50px;
+	height: 50px;
+	transform: rotate(45deg);
+	background: #f00;
+	position: relative;
+	top: 10rem;
+	left: 10rem;
+}
+.cuore:before,
+.cuore:after{
+	content: "";
+	height: 50px;
+	width: 50px;
+	border-radius: 50%;
+	background: #f00;
+	position: absolute;
+}
+.cuore:before {
+	top: 0;
+	left: -25px;
+
+}
+.cuore:after {
+	top: -25px;
+	
+}
