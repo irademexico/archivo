@@ -1,19 +1,15 @@
-<?php 
+<?php  
 	$con=new mysqli("localhost","root","","sagrario");
-
-if ($con->connect_errno){
-    echo "conexion erronea";
-    exit();
-}
-$base='last_solic';
-$sql="SELECT * FROM $base";
-$result= $con->query($sql);
-$solic=$result->fetch_assoc();
-$numSolicitud= $solic['solicitud'];
-
-
-
-
+	if ($con->connect_errno){
+	    echo "conexion erronea";
+	    exit();
+	}
+	
+	$base='last_solic';
+	$sql="SELECT * FROM $base";
+	$result= $con->query($sql);
+	$solic=$result->fetch_assoc();
+	$numSolicitud= $solic['solicitud'];
 
 	date_default_timezone_set('America/Mexico_City');
 	$dia=date('N');
@@ -27,68 +23,58 @@ $numSolicitud= $solic['solicitud'];
 	$fecent=date("Y-m-d",$fecent);
 	$hoy=date('Y-m-d');
 
-
-	$con= new mysqli("localhost", "root", "", "sagrario");
-	if ($con->connect_errno){
-	    echo "conexion erronea";
-	    exit();
-	}
 	
 	$base='solicitudes';
-
-
 	$sql="SELECT  * FROM $base WHERE numSolicitud = $numSolicitud";
+	$result = mysqli_query($con, $sql);
+	$regs=mysqli_num_rows($result);
 
-
-	$result = mysqli_query($con, $sql) or die(error_log('no encontro Solicitudes'));
-	$regs=mysqli_num_rows(mysqli_query($con, $sql));
-
-	
  ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
+		<!DOCTYPE html>
+		<html>
+		<head>
+		    <meta charset="utf-8">
 
-    <!-- Always force latest IE rendering engine or request Chrome Frame -->
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		    <!-- Always force latest IE rendering engine or request Chrome Frame -->
+		    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Solicitudes</title>
+		    <title>Solicitudes</title>
 
-    <meta name="description" content="Archivo Sagrario Metropolitano" />
-    <meta name="keywords" content="sagrario, metropolitano" />
+		    <meta name="description" content="Archivo Sagrario Metropolitano" />
+		    <meta name="keywords" content="sagrario, metropolitano" />
 
-    <link href="css/normalize.css" rel="stylesheet" type="text/css" />
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+		    <link href="css/normalize.css" rel="stylesheet" type="text/css" />
+		    <script src="http://code.jquery.com/jquery-latest.js"></script>
+		    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
-    <link href="img/favicon.ico" rel="icon" type="image/png" />
+		    <link href="img/favicon.ico" rel="icon" type="image/png" />
 
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    
-</head>
-<body>  
+		    <link rel="stylesheet" type="text/css" href="css/style.css">
+		    
+		</head>
+		<body>  
 
-    <header >
-        SAGRARIO METROPOLITANO<br>
-        Sistema Archivo
+		    <header >
+		        SAGRARIO METROPOLITANO<br>
+		        Sistema Archivo
 
-        <form class="formTop" name="form" method="POST" action=''>
-            <input class="submitTop" type="submit" name="busca" onclick="enviab('buscasol.php')" value="Corregir"  >
-            <input  class="submitTop" type="submit" name="newsol" onclick="enviab('cap_solicitudes.php')" value="Nueva Solicitud" >
-            <input  class="submitTop" type="submit" name="sube" onclick="enviab('envia.php')" value="Envia a USB"  >
-            <input  class="submitTop" type="submit" name="feccon" onclick="enviab('fechascon.php')" value="Fechas de Confirmacion" >
-        </form>
-    </header>
+		        <form class="formTop" name="form" method="POST" action=''>
+		            <input class="submitTop" type="submit" name="busca" onclick="enviab('buscasol.php')" value="Corregir"  >
+		            <input  class="submitTop" type="submit" name="newsol" onclick="enviab('cap_solicitudes.php')" value="Nueva Solicitud" >
+		            <input  class="submitTop" type="submit" name="sube" onclick="enviab('envia.php')" value="Envia a USB"  >
+		            <input  class="submitTop" type="submit" name="feccon" onclick="enviab('fechascon.php')" value="Fechas de Confirmacion" >
+		        </form>
+		    </header>
 
-    <article class="titulo">Corregir última solicitud</article>
+		    <article class="titulo">Corregir última solicitud</article>
 
 
 <?php
+if ($regs==0) {
+	echo "<h3>NO HAY SOLICITUDES</h3>";
+}else{
 
-	//echo "<table border = '1' style='color:#0000cc; width= 80%;'> \n"; 
-  	//echo "<tr><td style='width: 7%;'>Solicitud</td><td style='width: 22%;'>Nombre</td><td style='width: 22%;'> Padres </td><td style='width: 22%;'>Padrinos</td><td style='width: 10%;'>Fec.Solicitud</td><td style='width: 10%; '>Solicitud de</td> </tr>"; 
 	$checked1="";
 	$checked2="";
 	$checked3="";
@@ -101,119 +87,129 @@ $numSolicitud= $solic['solicitud'];
 	$func="";
 
     while ($consulta= mysqli_fetch_array($result)) 
-{
+	{
  
 
-  if ($consulta['solicitud']== 1) {
-  		$sol=1;
-        $solic = "Bautismo";
-        $baseBusca= "bautismo";
-        $checked1="checked";
-        $func="javascript:myVisible()";
+		if ($consulta['solicitud']== 1) {
+	  		$sol=1;
+	        $solic = "Bautismo";
+	        $baseBusca= "bautismo";
+	        $checked1="checked";
+	        $func="javascript:myVisible()";
 
-  }elseif ($consulta['solicitud']== 2) {
-  		$sol=2;
-        $solic = "Confirmación";
-        $baseBusca="confirma";
-        $checked2="checked";
-        $func="javascript:myVisible2()";
-  }else{
-  		$sol=3;
-        $solic = "Matrimonio";
-        $baseBusca="matrimonios";
-        $checked3="checked";
-        $func="javascript:myVisible3()";
-  }
+		}elseif ($consulta['solicitud']== 2) {
+	  		$sol=2;
+	        $solic = "Confirmación";
+	        $baseBusca="confirma";
+	        $checked2="checked";
+	        $func="javascript:myVisible2()";
+		}else{
+	  		$sol=3;
+	        $solic = "Matrimonio";
+	        $baseBusca="matrimonios";
+	        $checked3="checked";
+	        $func="javascript:myVisible3()";
+	  	}
   
-  if ($consulta['simple']== 1) {
-        $checked4="checked";
-  }else{
-        $checked5="checked";
-  }
+		if ($consulta['simple']== 1) {
+        	$checked4="checked";
+  		}else{
+        	$checked5="checked";
+  		}
 
-  if ($consulta['urgente']== 1) {
-        $checked6="checked";
-  }else{
-        $checked7="checked";
-  }
+  		if ($consulta['urgente']== 1) {
+        	$checked6="checked";
+  		}else{
+        	$checked7="checked";
+  		}
 
-   if ($consulta['para']== 1) {
-        $checked8="checked";
-        $para=1;
-  }else{
-        $checked9="checked";
-        $para=0;
-  }
-  $numSol= $consulta['numSolicitud'];
-  $fechasol=$consulta['fecaSolicitud'];
-  $anosol=substr($consulta['fecaSolicitud'],0,4);
-  $messol=substr($consulta['fecaSolicitud'],5,2);
-  $diasol=substr($consulta['fecaSolicitud'],8,2);
+   		if ($consulta['para']== 1) {
+        	$checked8="checked";
+        	$para=1;
+  		}else{
+        	$checked9="checked";
+        	$para=0;
+  		}
+		  $numSol= $consulta['numSolicitud'];
+		  $fechasol=$consulta['fecaSolicitud'];
+		  $anosol=substr($consulta['fecaSolicitud'],0,4);
+		  $messol=substr($consulta['fecaSolicitud'],5,2);
+		  $diasol=substr($consulta['fecaSolicitud'],8,2);
 
-  //echo "<tr ><td  style='width: 7%;'>".$consulta['numSolicitud']."</td> <td  style='width: 22%;'>".$consulta['nombre']." ".$consulta['apPaterno']." ".$consulta['apMaterno']." ".$consulta['esposo']." - ".$consulta['esposa'].    "</td><td  style='width: 22%;'>".$consulta['padre']." - ".$consulta['madre']."</td> <td  style='width: 22%;'>".$consulta['padrino']." - ".$consulta['madrina']."</td> <td  style='width: 10%;'>".$diasol."/".$messol."/".$anosol."</td> <td style='width: 10%; '>".$solic."</td>       </tr> ";
-  $nombre=$consulta['nombre'];
-  $paterno=$consulta['apPaterno'];
-  $materno=$consulta['apMaterno'];
-  $esposo=$consulta['esposo'];
-  $esposa=$consulta['esposa'];
-  $padre=$consulta['padre'];
-  $madre=$consulta['madre'];
-  $padrino=$consulta['padrino'];
-  $madrina=$consulta['madrina'];
-  $fecSacr=$consulta['fecSacr'];
-  $fechaNac=$consulta['fecNac'];
-  $fecAprox=$consulta['fecAprox'];
-  $fecEntrega=$consulta['fecEntrega'];
-  $original=$consulta['original'];
-}
+		  $nombre=$consulta['nombre'];
+		  $paterno=$consulta['apPaterno'];
+		  $materno=$consulta['apMaterno'];
+		  $esposo=$consulta['esposo'];
+		  $esposa=$consulta['esposa'];
+		  $padre=$consulta['padre'];
+		  $madre=$consulta['madre'];
+		  $padrino=$consulta['padrino'];
+		  $madrina=$consulta['madrina'];
+		  $fecSacr=$consulta['fecSacr'];
+		  $fechaNac=$consulta['fecNac'];
+		  $fecAprox=$consulta['fecAprox'];
+		  $fecEntrega=$consulta['fecEntrega'];
+		  $original=$consulta['original'];
+		$chekparaM="";
+		$chekparaC="";
+		$chekparaF="";
+		$chekparaP="";
+		$chekparaO="";
+		switch ($consulta['para']) {
+			case '1':
+				$chekparaM="checked";
+				break;
+			case '2':
+				$chekparaC="checked";
+				break;
+			case '3':
+				$chekparaF="checked";
+				break;
+			case '4':
+				$chekparaP="checked";
+				break;
+			
+			default:
+				$chekparaO="checked";
+				break;
+		}
 
+	}
 ?>
 
-<?php echo $consulta['numSolicitud'];?>
+<?php echo $numSol;?>
 
-<form action="imp_solicitud.php" method="POST">
-	<article>
-		<h4>Numero de solicitud: <?php echo $numSol;?></h4>
-		<table >
-			<tr><caption style="height: 30px"><h4>Tipo de solicitud</h4></caption>
-			</tr>
-				<tr width="640">
-				<td width="150">
-					<input type="hidden" name="busca" value="1">
-					<input type="radio" id="sol" name="solicitud" value="1" <?php echo $checked1;?> onchange="myVisible()"  />Bautismo<br>
-					<input type="radio" id="sol" name="solicitud" value="2" <?php echo $checked2;?>  onchange="myVisible2()" />Confirmacion<br>
-					<input type="radio" id="sol" name="solicitud" value="3" <?php echo $checked3;?>  onchange="myVisible3()"  />Matrimonio<br>
-				</td>
-				<td width="150">
-					<input type="radio" name="simple" value="1"  <?php echo $checked4;?> />Simple<br>
-					<input type="radio" name="simple" value="2"  <?php echo $checked5;?> />Certificada<br>
-				</td>
-				<td width="150">
-					<input type="radio" name="urgente" value="1" <?php echo $checked6;?> />Normal<br>
-					<input type="radio" name="urgente" value="2" <?php echo $checked7;?> />Urgente<br>
-				</td>
-				<td width='190'>
-				<article id='fMatri' style='height: 40px;'>
-				<?php 
-				if ($para==1) {
-					
-				?>		
-					<input type='radio' name='para' value='1' checked> para Matrimonio<br>
-					<input type='radio' name='para' value='2' >para Otros
-				<?php
-				}else{
-				?>
-					<input type='radio' name='para' value='1' >para Matrimonio<br>
-					<input type='radio' name='para' value='2' checked>para Otros
-				<?php
-				}
-				?>
+<form action="imp_solicitud.php" method="POST" target="_blank">
 	
+	<table >
+		<tr width="640">
+			<td width="150">
+				<input type="hidden" name="busca" value="1">
+				<input type="radio" id="sol" name="solicitud" value="1" <?php echo $checked1;?> onchange="myVisible()"  />Bautismo<br>
+				<input type="radio" id="sol" name="solicitud" value="2" <?php echo $checked2;?>  onchange="myVisible2()" />Confirmacion<br>
+				<input type="radio" id="sol" name="solicitud" value="3" <?php echo $checked3;?>  onchange="myVisible3()"  />Matrimonio<br>
+			</td>
+			<td width="150">
+				<input type="radio" name="simple" value="1"  <?php echo $checked4;?> />Simple<br>
+				<input type="radio" name="simple" value="2"  <?php echo $checked5;?> />Certificada<br>
+			</td>
+			<td width="150">
+				<input type="radio" name="urgente" value="1" <?php echo $checked6;?> />Normal<br>
+				<input type="radio" name="urgente" value="2" <?php echo $checked7;?> />Urgente<br>
+			</td>
+			<td width="500" >
+				<article id="fMatri" style="height: 60px">
+					
+					<input type="radio" name="para" value="1" <?php echo $chekparaM; ?>/>p/ Matrimonio
+					<input type="radio" name="para" value="2" <?php echo $chekparaC; ?>/>p/ Comunión
+					<input type="radio" name="para" value="3" <?php echo $chekparaF; ?>/>p/ Confirmación<br>
+					<input type="radio" name="para" value="4" <?php echo $chekparaP; ?>/>para Padrino-Madrina
+					<input type="radio" name="para" value="5" <?php echo $chekparaO; ?>/>para otros
 				</article>
-				</td>
-			</tr>
-		</table>
-	</article>
+			</td>				
+		</tr>
+	</table>
+	
 	
 	<article id="fNombre" style="white-space: wrap; overflow: hidden;visibility: visible; align-content: left;">
 		<table>
@@ -231,7 +227,7 @@ $numSolicitud= $solic['solicitud'];
 			</tr>
 		</table>
 	</article>
-	<article id="fEsposos" style="white-space: wrap; overflow: hidden;visibility: hidden;">
+	<article id="fEsposos" style="white-space: wrap; overflow: hidden;visibility: visible;">
 		<table>
 			<tr>
 				<td style="padding: 10 10 10 10;">
@@ -400,3 +396,6 @@ $numSolicitud= $solic['solicitud'];
     </footer>
 </body>
 </html>
+<?php 
+}
+ ?>

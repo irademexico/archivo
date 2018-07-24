@@ -106,6 +106,7 @@ $pdf = new PDF();
 // Primera página
 
 
+
 while ($actas=$result->fetch_assoc()) {
 
     $nom=$actas['nombre'];
@@ -120,6 +121,7 @@ while ($actas=$result->fetch_assoc()) {
         $pdf->ln(10);
     }
    else{
+    $pdf->AddPage();
     $pdf->ln(60);
    } 
         $pdf->SetFont('Arial','',18);

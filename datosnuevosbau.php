@@ -1,18 +1,6 @@
 <?php 
-	$fechabau=$_POST['fechabau'];
-	$libro=$_POST['libro'];
-	$foja=$_POST['partidan'];
-	$partidan=$_POST['partidan'];
-	$partidaab=$_POST['partidaab'];
-	$ministro=$_POST['ministro'];
-
-	$con=new mysqli("localhost", "root", "", "sagrario");
-	if ($con->connect_errno){
-	    		echo "conexion erronea";
-	    		exit();
-	}
-	$sql="UPDATE datosbautismos SET fechabau='$fechabau', libro='$libro', foja='$foja', partida='$partidan', partidaab='$partidaab', ministro='$ministro' WHERE id=1 ";
-	$actualiza=mysqli_query($con, $sql);
+	$fechabau=date($_GET['fechabau']);
+	$ministro=$_GET['ministro'];
  ?>
 
 <!DOCTYPE html>
@@ -36,7 +24,7 @@
 	<date-util format="dd/MM/yyyy"></date-util>
 
 	<header style="font-size: 1em; height: 35px;">
-		<p style="font-size: 1.3em;height: 15px;">SAGRARIO METROPOLITANO</p>
+		SAGRARIO METROPOLITANO
 		Sistema Archivo
 	
 	<section style="font-size: 1em">
@@ -51,100 +39,49 @@
 		</form>
 	</section>
 </header>
+
+
+
 <?php
 
 
-/*
-$fechabau=$_POST['fechabau'];
-$libro=$_POST['libro'];
-$foja=$_POST['foja'];
-$partidan=$_POST['partidan'];
-$partidaab=$_POST['partidaab'];
-$ministro=$_POST['ministro'];
-*/
+
+//
+
 ?>
+
+
 <form action="altanuevosbau.php" method="POST">
-	<table style="text-align: left;">
-	<tr>
-		<td>Fecha de Bautismo: </td>
-		<td style="font-size: 1.3em;"><?php echo $fechabau; ?></td>
-	</tr>
-		<td>Libro: </td>
-		<td style="font-size: 1.3em;"><?php echo $libro;?></td>
-		<td>Acta: </td>
-		<td style="font-size: 1.3em;"><?php echo $partidan;?> </td>
-		<td style="font-size: 1.3em;"><?php echo $partidaab;?></td>
-
-	</tr>
-
-	<tr>
-		<td>Ministro:</td><td style="font-size: 1.3em;"><?php echo $ministro;?>
-	</tr>
-	
-</table>
-
-
-<?php
-$clave=$libro."-".$partidan."-".$partidan."-".$partidaab;
-
-$base='nuevosbautismo';
-$sql="INSERT INTO $base (clave, libro, foja, partidan, partidaab, fechasacr, ministro) VALUES ('".$clave."', '".$libro."', '".$partidan."', '".$partidan."', '".$partidaab."', '".$fechabau."', '".$ministro."')";
-$result = mysqli_query($con, $sql);
-
-
-if ($partidaab=='A') {
-	$partidaab='B';
-}else{
-	$partidaab='A';
-	$partidan=$partidan+1;
-	$foja=$partidan;
-	if ($partidan==501) {
-		$libro=$libro+1;
-		$foja=1;
-		$partidan=1;
-		$partidaab='A';
-	}
-}
-
-$base='datosbautismos';
-$sql="UPDATE $base SET libro='$libro' foja=$partidan partidan=$partidan partidaab=$partidaab ministro=$ministro";
-
-$result = mysqli_query($con, $sql);
-
-
-
-//$sql="INSERT INTO nuevosbautismo (clave, inicial, libro, foja, partidan, partidaab, fechasacr, ministro, lugarnac, fechanac, nombre, paterno, materno, hijoa, padre, madre, padrino, madrina,  domicilio, colonia, lugarde, cpdom, parroquia, registroc, lugregciv, fecregciv) VALUES ('".$clave."', '".$inicial."', '".$libro."', '".$foja."', '".$partidan."', '".$partidaab."', '".$fechasacr."', '".$ministro."', '".$lugarnac."', '".$fechanac."', '".$nombre."', '".$paterno."', '".$materno."', '".$hijoa."', '".$padre."', '".$madre."', '".$padrino."', '".$madrina."', '".$domicilio."', '".$colonia."', '".$lugarde."', '".$cpdom."', '".$parroquia."', '".$registroc."', '".$lugregciv."', '".$fecregciv."')"
-
-?>
-
-	<input type="hidden" name="clave" value="<?php echo $clave?>">
 	<article style="text-align: left;">
-		Registro Civil: <input type="text" name="regCivil" maxlength="35" size="35">
-		Entidad: <input type="text" name="lugarRegCivil" maxlength="50" size="50">
-		Fecha de Reg.: <input type="date" name="fechaRegCivil"  size="30">
+		Fecha de bautismo: <input class="entrada" type="date" name="fechabau" value="<?php echo $fechabau; ?>"> Ministro:<input class="entradatx" type="text" name="ministro" value="<?php echo $ministro;?>" size="75">
 	</article>
 	<article style="text-align: left;">
-		Fecha Nacimiento: <input type="date" name="fecNac" size="10">
-		Lugar: <textarea rows="1" cols="75" name="lugarNac"></textarea>
+		Registro Civil: <input class="entradatx" type="text" name="regCivil" maxlength="35" size="35">
+		Entidad: <input class="entradatx" type="text" name="lugarRegCivil" maxlength="50" size="50">
+		Fecha de Reg.: <input class="entrada" type="date" name="fechaRegCivil"  size="30">
 	</article>
 	<article style="text-align: left;">
-		Nombre: <input type="text" name="nombre" maxlength="50" size="50"><br>
-		Apellido Paterno:<input type="text" name="paterno" maxlength="50" size="50"><br>
-		Apellido Materno:<input type="text" name="materno" maxlength="50" size="50">	
+		Fecha Nacimiento: <input class="entrada" type="date" name="fecNac" size="10">
+		Lugar: <input class="entradatx" type="text" name="lugarNac" size="75">
 	</article>
 	<article style="text-align: left;">
-		Hij:<input type="text" name="hijoa"  maxlength="1" size="1" placeholder="O/A"> 
-		Padre: <input type="text" name="padre" maxlength="50" size="50">
-		Madre: <input type="text" name="madre" maxlength="50" size="50">
+		Nombre: <input class="entradatx" type="text" name="nombre" maxlength="50" size="50"><p>
+		Apellido Paterno:<input class="entradatx" type="text" name="paterno" maxlength="50" size="50"><p>
+		Apellido Materno:<input class="entradatx" type="text" name="materno" maxlength="50" size="50">	
 	</article>
 	<article style="text-align: left;">
-		<p>Domicilio: <textarea rows="1" cols="50" name="domicilio" placeholder="calle"></textarea></p>
-		Colonia: <input type="text" name="colonia" maxlength="30" size="30">   
-		Entidad: <input type="text" name="lugarde" maxlength="35" size="30">
+		Hij:<input class="entradatx" type="text" name="hijoa"  maxlength="1" size="1" placeholder="O/A"> 
+		Padre: <input class="entradatx" type="text" name="padre" maxlength="50" size="50">
+		Madre: <input class="entradatx" type="text" name="madre" maxlength="50" size="50">
 	</article>
 	<article style="text-align: left;">
-		Padrinos: <input type="text" name="padrino" maxlength="50" size="50">
-		 y <input type="text" name="madrina" maxlength="50" size="50">
+		Domicilio: <input class="entradatx" type="text" name="domicilio" placeholder="calle" size="75"></input><p>
+		Colonia: <input class="entradatx" type="text" name="colonia" maxlength="30" size="30">   
+		Entidad: <input class="entradatx" type="text" name="lugarde" maxlength="35" size="30">
+	</article>
+	<article style="text-align: left;">
+		Padrinos: <input class="entradatx" type="text" name="padrino" maxlength="50" size="50">
+		 y <input class="entradatx" type="text" name="madrina" maxlength="50" size="50">
 	</article>
 	<article style="text-align: left; text-align: center;">
 		<input type="submit" value="Continuar">

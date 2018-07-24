@@ -1,4 +1,6 @@
 <?php 
+	$fechasacr=$_POST['fechabau'];
+	$ministro=$_POST['ministro'];
 	$regCivil=$_POST['regCivil'];
 	$lugarRegCivil=$_POST['lugarRegCivil'];
 	$fechaRegCivil=$_POST['fechaRegCivil'];
@@ -18,11 +20,9 @@
 	$clave=$_POST['clave'];
 	
 	$con=new mysqli("localhost", "root", "", "sagrario");
-
-	$base='nuevosbautismo';
-
-	$sql="UPDATE $base SET registroc='$regCivil', lugregciv='$lugarRegCivil', fecregciv='$fechaRegCivil', fechanac='$fecNac', lugarnac='$lugarNac', nombre='$nombre', paterno='$paterno', materno='$materno', hijoa='$hijoa', padre='$padre', madre='$madre', domicilio='$domicilio', colonia='$colonia', lugarde='$lugarde', padrino='$padrino', madrina='$madrina' WHERE clave='$clave'  ";
-	$result=mysqli_query($con, $sql);
-
-	header("Location: http://localhost/archivo/signvosbau.php");
+	if (!empty($nombre)) {
+		$sql="INSERT INTO nuevosbautismo (id, fechasacr, ministro, lugarnac, fechanac, nombre, paterno, materno, padre, madre, padrino, madrina, hijoa, domicilio, colonia, lugarde, registroc, lugregciv, fecregciv) VALUES (null, '$fechasacr', '$ministro', '$lugarNac', '$fecNac', '$nombre', '$paterno', '$materno', '$padre', '$madre', '$padrino', '$madrina', '$hijoa', '$domicilio', '$colonia', '$lugarde', '$regCivil', '$lugarRegCivil',  '$fechaRegCivil')";
+		$result=mysqli_query($con, $sql);
+	}
+	header("Location: http://localhost/archivo/datosnuevosbau.php?fechabau=$fechasacr&ministro=$ministro");
  ?>

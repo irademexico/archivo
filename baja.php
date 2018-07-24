@@ -22,11 +22,11 @@ exec("c:/xampp/htdocs/archivo/baja.bat");
   <header >
     SAGRARIO METROPOLITANO<br>
     Sistema Archivo
-  
+
     <form name="form" method="POST" action='busca.php'>
       <input class="submitTop" type="button" name="inicio" onclick="enviab('index.php')" value="Inicio"   >
       <input  class="submitTop"  type="button" name="archivo" onclick="enviab('archivo.php')" value="Archivo"  >
-      
+
       ||<input class="entradaMenu"  type="text" name="clave" placeholder="Clave L-F-A">
       <input  class="submitTop"  type="submit" name="busca" onclick="enviab('busca.php')" value="Buscar"  >||
       <input class="submitTop"   type="button" name="solic_local" onclick="enviab('solic_local.php')" value="Solicitudes"  >
@@ -74,7 +74,7 @@ while ($consulta= mysqli_fetch_array($listasol))
   $para=$consulta['para'];
   ++$num;
 
-  echo "<tr  style='font-size:1.2em; height:100px; color:#330066;' ><td  style='width: 7%;'>".$consulta['numSolicitud']."-".$consulta['para']."</td> <td  style='width: 22%;'>".$consulta['nombre']." ".$consulta['apPaterno']." ".$consulta['apMaterno']." ".$consulta['esposo']." <br> ".$consulta['esposa'].    "</td><td  style='width: 22%;'>".$consulta['padre']." <br> ".$consulta['madre']."</td> <td  style='width: 22%;'>".$consulta['padrino']." <br> ".$consulta['madrina']."</td> <td  style='width: 10%;'>".$diafn."/".$mesfn."/".$anofn."</td> <td style='width: 10%; '>".$solic."</td> <td style='width: 8%;'>".$consulta['fecaSolicitud']."</td> <td style='width: 7%;'><a href='nueva.php?numSolicitud=".$consulta['numSolicitud']."'><button>Continuar</button></a> </td>
+  echo "<tr  style='font-size:1.2em; height:100px; color:#330066;' ><td  style='width: 7%;'>".$consulta['numSolicitud']."-".$consulta['para']."</td> <td  style='width: 22%;'>".$consulta['nombre']." ".$consulta['apPaterno']." ".$consulta['apMaterno']." ".$consulta['esposo']." <br> ".$consulta['esposa']."</td><td  style='width: 22%;'>".$consulta['padre']." <br> ".$consulta['madre']."</td> <td  style='width: 22%;'>".$consulta['padrino']." <br> ".$consulta['madrina']."</td> <td  style='width: 10%;'>".$diafn."/".$mesfn."/".$anofn."</td> <td style='width: 10%; '>".$solic."</td> <td style='width: 8%;'>".$consulta['fecaSolicitud']."</td> <td style='width: 7%;'><a href='nueva.php?numSolicitud=".$consulta['numSolicitud']."'><button>Continuar</button></a> <p> <a href='noexiste.php?numSolicitud=".$consulta['numSolicitud']."'><button>NO ENCONTRO</button></a></td>
      </tr> ";
   //echo "<table border = '.1' style='color:#003333; width= 80%;' > ";
   //echo "<tr ><td style='width: 7%;'>Solicitud</td><td style='width: 17%;'>Nombre</td><td style='width: 17%;'> Padres </td><td style='width: 17%;'>Padrinos</td><td style='width: 10%;'>Fec.Nacimiento</td><td style='width: 110%;'>CLAVE-LFA</td> <td style='width: 7%;'></td> </tr>";
@@ -102,20 +102,20 @@ while ($consulta= mysqli_fetch_array($listasol))
     $patymat="'".$apat." ".$amat."'";
     $fnac="'".$consulta['fecNac']."'";
     //echo $nom."-".$snom."-".$apat."-".$amat."<br>";
-    $encontrado=mysqli_query($con,  "SELECT * FROM bautismo  WHERE  paterno = $apat AND materno = $amat AND nombre like $nom");
+    $encontrado=mysqli_query($con,  "SELECT * FROM bautismo  WHERE  paterno = $apat AND materno = $amat AND nombre like $nom ORDER BY madre ASC");
     $regs=mysqli_num_rows(mysqli_query($con, "SELECT * FROM bautismo  WHERE  paterno = $apat AND materno = $amat AND nombre like $nom" ));
     //echo $regs;
     if ($regs == 0){
 
       //PENDIENTES DE PROGRAMAR BUSQUEDAS AVANZADAS
 
-      $encontrado=mysqli_query($con,  "SELECT * FROM bautismo  WHERE  paterno = $apat AND materno = $amat AND nombre like $snom");
+      $encontrado=mysqli_query($con,  "SELECT * FROM bautismo  WHERE  paterno = $apat AND materno = $amat AND nombre like $snom ORDER BY madre ASC");
 
-       $regs=mysqli_num_rows(mysqli_query($con, "SELECT * FROM bautismo  WHERE  paterno = $apat AND materno = $amat AND nombre like $snom" ));
+       $regs=mysqli_num_rows(mysqli_query($con, "SELECT * FROM bautismo  WHERE  paterno = $apat AND materno = $amat AND nombre like $snom ORDER BY madre ASC" ));
 
        if ($regs== 0) {
-         $encontrado=mysqli_query($con,  "SELECT * FROM bautismo  WHERE  materno = $amat AND nombre like $nom");
-         $regs=mysqli_num_rows(mysqli_query($con, "SELECT * FROM bautismo  WHERE  paterno = $apat AND materno = $amat AND nombre like $snom" ));
+         $encontrado=mysqli_query($con,  "SELECT * FROM bautismo  WHERE  materno = $amat AND nombre like $nom ORDER BY madre ASC");
+         $regs=mysqli_num_rows(mysqli_query($con, "SELECT * FROM bautismo  WHERE  paterno = $apat AND materno = $amat AND nombre like $snom ORDER BY madre ASC" ));
          if ($regs==0) {
            echo "<tr ><td style='color:#ff0000;' colspan= '3'>"."NO SE ENCONTRO"."</td></tr> ";
          }
@@ -155,19 +155,19 @@ while ($consulta= mysqli_fetch_array($listasol))
         $padrino="'".trim($consulta['padrino'])."'";
 
 
-        $sql="SELECT * FROM confirma WHERE  paterno = $apat AND materno=$amat AND nombre LIKE $nom";
+        $sql="SELECT * FROM confirma WHERE  paterno = $apat AND materno=$amat AND nombre LIKE $nom ORDER BY madre ASC";
         $encontrado=mysqli_query($con, $sql);
          $regs=mysqli_num_rows(mysqli_query($con, $sql));
          if ($regs==0) {
-           $sql="SELECT * FROM confirma WHERE  paterno = $apat AND papa=$papa AND nombre LIKE $nom";
+           $sql="SELECT * FROM confirma WHERE  paterno = $apat AND papa=$papa AND nombre LIKE $nom ORDER BY madre ASC";
            $encontrado=mysqli_query($con, $sql);
             @$regs=mysqli_num_rows(mysqli_query($con, $sql));
             if ($regs==0) {
-              $sql="SELECT * FROM confirma WHERE  paterno like $sapat AND materno like $samat AND nombre LIKE $snom";
+              $sql="SELECT * FROM confirma WHERE  paterno like $sapat AND materno like $samat AND nombre LIKE $snom ORDER BY madre ASC";
               $encontrado=mysqli_query($con, $sql);
                $regs=mysqli_num_rows(mysqli_query($con, $sql));
                if ($regs==0) {
-                 $sql="SELECT * FROM confirma WHERE  madre = $mama";
+                 $sql="SELECT * FROM confirma WHERE  madre = $mama ORDER BY madre ASC";
                  $encontrado=mysqli_query($con, $sql);
                   $regs=mysqli_num_rows(mysqli_query($con, $sql));
 
