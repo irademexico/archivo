@@ -34,7 +34,7 @@
     <link href="img/favicon.ico" rel="icon" type="image/png" />
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    
+
 </head>
 
 <body>
@@ -49,6 +49,7 @@
 			<input  class="submitTop" type="submit" name="newsol" onclick="enviab('cap_solicitudes.php')" value="Nueva Solicitud" >
 			<input  class="submitTop" type="submit" name="sube" onclick="enviab('envia.php')" value="Envia a USB"  >
 			<input  class="submitTop" type="submit" name="feccon" onclick="enviab('fechascon.php')" value="Fechas de Confirmacion" >
+			<input  class="submitTop" type="submit" name="feccon" onclick="enviab('recuSol.php')" value="Recupera Solicitudes" >
 		</form>
 	</header>
 
@@ -56,13 +57,13 @@
 
 
 <section>
-<form action="imp_solicitud.php" method="POST">
+<form action="imp_solicitud.php" method="POST" target="_blank">
 	<input type="hidden" name="busca" value="0">
 	<article>
-		<table >
+		<table width="960" align="">
 			<caption>Tipo de solicitud</caption>
-			<tr width="640">
-				<td width="150">
+			<tr width="960">
+				<td width="150" >
 					<input type="hidden" name="busca" value="0">
 					<input type="radio" id="sol" name="solicitud" value="1" checked onchange="myVisible()"  />Bautismo<br>
 					<input type="radio" id="sol" name="solicitud" value="2"  onchange="myVisible2()" />Confirmacion<br>
@@ -76,10 +77,14 @@
 					<input type="radio" name="urgente" value="1" checked />Normal<br>
 					<input type="radio" name="urgente" value="2" />Urgente<br>
 				</td>
-				<td width="190">
-					<article id="fMatri" style="height: 40px">
-					<input type="radio" name="para" value="1" checked />para Matrimonio<br>
-					<input type="radio" name="para" value="2" />para Otros
+				<td width="500" >
+					<article id="fMatri" style="height: 60px">
+
+					<input type="radio" name="para" value="1" checked />p/ Matrimonio
+					<input type="radio" name="para" value="2" />p/ Comunión
+					<input type="radio" name="para" value="3" />p/ Confirmación<br>
+					<input type="radio" name="para" value="4" />para Padrino-Madrina
+					<input type="radio" name="para" value="5" />para otros
 					</article>
 				</td>
 
@@ -246,9 +251,9 @@
             $("#input4").val(value);
         });
     });
-	
+
 	    function validar() {
-            var inicio = document.getElementById('fecha_inicio').value; 
+            var inicio = document.getElementById('fecha_inicio').value;
             var finalq  = document.getElementById('fecha_fin').value;
             inicio= new Date(inicio);
             finalq= new Date(finalq);

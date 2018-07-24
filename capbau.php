@@ -1,6 +1,7 @@
 <?php
 
 	$solicitud=$_POST['solicitud'];
+	$para=$_POST['para'];
 	$libro=$_POST['libro'];
 	$librobis=$_POST['librobis'];
 	$foja=$_POST['foja'];
@@ -11,7 +12,9 @@
 	$altasol=True;
 	$alta=True;
 	$txnotamar="";
-	$txnotapie="Valida para tramitar matrimonio en la parroquia de";
+	if ($para==1) {
+			$txnotapie="Valida para tramitar matrimonio en la parroquia de";
+	}
 
 	if (empty($librobis)) {
 		$clave=trim(substr($libro,0)).'-';
@@ -79,32 +82,82 @@
 		//$sql = "SELECT * FROM $base WHERE clave = '".$clave."'";
 		$sql = "SELECT * FROM $base WHERE libro=$libro AND librobis='$librobis' AND foja=$foja AND fojac='$fojac' AND partidan=$partidan AND partidaab='$partidaab'";
 
-		$result = mysqli_query($con, $sql ) or die(error_log('no consulto clave'));
+		$result = mysqli_query($con, $sql );
 		$regs=mysqli_num_rows(mysqli_query($con, $sql));
 
 		$registro=mysqli_fetch_assoc($result);
-
+			$checkmt="";
+			$checkcf="";
+			$checkcm="";
+			$checkor="";
 		if ($regs>0) {
 			$alta=False;
-
+			$notamar=0;
+			$txnotamar="";
 			$base='notas_marg';
 			$sql = "SELECT * FROM $base WHERE clave='".$clave."'";
 			$result = mysqli_query($con, $sql );
 			@$regs=mysqli_num_rows(mysqli_query($con, $sql));
-			@$notaMarginal=mysqli_fetch_assoc($result);
+			$checkmt="";
+			$checkcf="";
+			$checkcm="";
+			$checkor="";
 			if ($regs>0) {
-					$txnotamar=utf8_encode($notaMarginal['txnotamar']);
+				while ($notaMarginal=mysqli_fetch_assoc($result)) {
+					$txnotamar=$txnotamar.utf8_encode($notaMarginal['txnotamar'])." ; ";
+
+					switch ($notaMarginal['nota']) {
+						case '1':
+							$checkmt="checked";
+							break;
+						case '2':
+							$checkcf="checked";
+							break;
+						case '3':
+							$checkcm="checked";
+							break;
+						case '4':
+							$checkor="checked";
+							break;
+					}
+				}
 			}
 
 			$base='notas';
 			$numSolant=$registro['solicitud'];
 
-			$sql = "SELECT * FROM $base WHERE numSolicitud=$numSolant";
+			$sql = "SELECT * FROM $base WHERE clave='$clave'";
 			$result = mysqli_query($con, $sql );
 			@$regs=mysqli_num_rows(mysqli_query($con, $sql));
-			@$nota=mysqli_fetch_assoc($result);
+			$txnotapie="";
+			$txpara="";
+
 			if ($regs>0) {
-					$txnotapie=utf8_encode($nota['notaPie']);
+					while ($nota=mysqli_fetch_assoc($result)) {
+
+						switch ($nota['para']) {
+							case '1':
+								$codpara='Matrimonio';
+								if ($para==1) {
+										$txnotapie=$txnotapie.utf8_encode($nota['notaPie']);
+								}
+								break;
+							case '2':
+								$codpara='Confirmación';
+								break;
+							case '3':
+								$codpara='Comunión';
+								break;
+							case '4':
+								$codpara='Orden';
+								break;
+
+							default:
+								$codpara='otros';
+								break;
+						}
+						$txpara=$txpara.$nota['numSolicitud']." - ".$codpara." ";
+					}
 			}
 		}
 		$fecsacr=$registro['fechasacr'];
@@ -123,11 +176,12 @@
 
 	</tr>
 </table>
-		<?php echo "<input type='hidden' name='libro' maxlength='4' size='4' value='".$libro."'>" ."<input type='hidden' name='librobis'	maxlength='2' size='2' value='".$librobis."'>"."<input type='hidden' name='foja' maxlength='4' size='4' value='".$foja."'>"."<input type='hidden' name='fojac' maxlength='3' size='4' value='".$fojac."'><input type='hidden' name='partidan' maxlength='4' size='4' value='".$partidan."'><input type='hidden' name='partidaab' maxlength='1' size='1' value='".$partidaab."'>"."<input type='hidden' name='numSolicitud'	maxlength='2' size='2' value='".$solicitud."'>";
+		<?php echo "<input type='hidden' name='libro' maxlength='4' size='4' value='".$libro."'>" ."<input type='hidden' name='librobis'	maxlength='2' size='2' value='".$librobis."'>"."<input type='hidden' name='foja' maxlength='4' size='4' value='".$foja."'>"."<input type='hidden' name='fojac' maxlength='3' size='4' value='".$fojac."'><input type='hidden' name='partidan' maxlength='4' size='4' value='".$partidan."'><input type='hidden' name='partidaab' maxlength='1' size='1' value='".$partidaab."'>"."<input type='hidden' name='numSolicitud'	maxlength='2' size='2' value='".$solicitud."'>"."<input type='hidden' name='para'	maxlength='2' size='2' value='".$para."'>";
 		?>
 
 		<table style="background: #ccff66;">
 			<tr>
+				<td >Numero de Solicitud: </td> <td  style='font-size:1.3em;'><strong><?php echo $registro['solicitud']	?></strong></td>
 
 			<td>Fecha de Sacramento: </td>
 			<td><input class="entradatx" type="date" data-date-format="dd/mmmm/aaaa"   name="fecsacr"  size="10" value="<?php echo $fecsacr;?>"></td>
@@ -166,13 +220,24 @@
 		<td>en:</td>
 		<td><input class="entradatx" type="text" name="lugarnac" placeholder='entidad-colonia...' size="50" value="<?php echo utf8_encode($registro['lugarnac']);?>"></td></tr>
 </table>
-<table><tr>
+<table id="tdizq"><tr>
+	<td>Nota Marginal <br>(cheque para grabar,<br> solo una)</td>
+	<td >
+		<input type="hidden" name="notam" value="0" checked>
+		<input type='checkbox' name='notam' value="1"  >Matrimonio<br>
+		<input type='checkbox' name='notam' value="2"  >Confirmación<br>
+		<input type='checkbox' name='notam' value="3"  >Comunión<br>
+		<input type='checkbox' name='notam' value="4"  >Orden<br>
+
+
+	</td>
 <?php
-		echo "<td>Nota marginal:</td><td><input class='entradatx' type='text' name='notamar' size='1' value='".$registro['notamar']."' maxlenght='1'></td><td><textarea class='entradaarea' rows='4' cols='50' name='txnotamar'>".$txnotamar."</textarea></td>"."	<td>Nota al pie:</td><td><textarea class='entradaarea' rows='4' cols='45' name='notapie'>".$txnotapie."</textarea></td></tr></table>";
+		echo "<td><textarea class='entradaarea' rows='4' cols='50' name='txnotamar'>".($txnotamar)."</textarea></td>"."	<td>Nota al pie:</td><td><textarea class='entradaarea' rows='4' cols='45' name='notapie'>".
+		($txnotapie)."</textarea><br>".$txpara."</td></tr></table>";
 		echo "<input type='hidden' name='clave' value='".$clave."' visible='hidden'>";
 		echo "<input type='hidden' name='alta' value='".$alta."' visible='hidden'>";
 		echo "<input type='hidden' name='altasolcap' value='".$altasol."' visible='hidden'>";
-		
+
 ?>
 
 		<input type='submit' name='' value='Continuar'>

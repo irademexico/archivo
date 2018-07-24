@@ -1,4 +1,4 @@
-<?php 
+<?php
 //Autor: José Ignacio Ruiz Arroyo
 //Fecha: 14 - diciembre - 2017 - Inicio del proyecto
 //Implantación Beta: 26-marzo-2018.
@@ -22,11 +22,11 @@
 	<header >
 		SAGRARIO METROPOLITANO<br>
 		Sistema Archivo
-	
+
 		<form name="form" method="" action='#'>
 			<input class="submitTop" type="button" name="inicio" onclick="enviab('index.php')" value="Inicio"   >
 			<input  class="submitTop"  type="button" name="archivo" onclick="enviab('archivo.php')" value="Archivo"  >
-			
+
 			||<input class="entradaMenu"  type="text" name="clave" placeholder="Clave L-F-A">
 			<input  class="submitTop"  type="submit" name="busca" onclick="enviab('busca.php')" value="Buscar"  >||
 
@@ -42,7 +42,15 @@
 			<tr>
 				<td>Solicitud: </td>
 				<td><input class="entradatx" type="text" name="solicitud" 	maxlength="9" size="9" step='.01'></td>
-
+				<td>para
+				<select class="" name="para">
+					<option value="1">Matrimonio</option>
+					<option value="2">Confirmación</option>
+					<option value="3">Comunión</option>
+					<option value="4">Orden</option>
+					<option value="5">otros</option>
+				</select>
+			</td>
 				<td>Libro: </td>
 				<td><input class="entradatx" type="text" name="libro" 		maxlength="4" size="4"></td>
 				<td><input class="entradatx" type="text" name="librobis"	maxlength="2" size="4" placeholder="L/N/LN/E"></td>
@@ -65,10 +73,10 @@
 	</footer>
 
 	<SCRIPT LANGUAGE="JavaScript">
-		function enviab(pag){ 
-			document.form.action= pag 
-			document.form.submit() 
-		} 
-	</script>	
+		function enviab(pag){
+			document.form.action= pag
+			document.form.submit()
+		}
+	</script>
 </body>
 </html>
