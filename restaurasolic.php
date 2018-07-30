@@ -10,6 +10,11 @@
 	$result=mysqli_query($con, $sql) or die ("no cambio el status");
 
 	$sql="INSERT INTO  $base SELECT * FROM $baselocal WHERE numSolicitud=$numSolicitud";
-	$result=mysqli_query($con, $sql) or die ("NO RESTAURO");
-	header("Location: cap_solicitudes.php");
+	$result=mysqli_query($con, $sql) ;
+
+
 ?>
+<script type="text/javascript">
+	alert("Solicitud restaurada");
+	location.href="recuSol.php";
+</script>

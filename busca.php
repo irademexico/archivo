@@ -127,34 +127,54 @@ $clave=$_POST['clave'];
 				$anociv=substr($registro['fecregciv'], 0, 4);
 				$fecregciv=$diaciv."/".$mesciv."/".$anociv;
 			}
-      $txnotamar="";
-			if (!empty($solicitud)) {
-				$sql = "SELECT * FROM notas_marg WHERE clave = '".$clave."'";
-				$resultnm = mysqli_query($con, $sql);
-        $regs=mysqli_num_rows(mysqli_query($con, $sql));
-        if ($regs>0) {
-            while ($notaMarginal=mysqli_fetch_assoc($resultnm)) {
-               $txnotamar=$txnotamar.utf8_encode($notaMarginal['txnotamar']).";".chr(13);
-            }
-        }
 
+        $txnotamar="";
+  			$base='notas_marg';
+  			$sql = "SELECT * FROM $base WHERE clave='".$clave."'";
+  			$result = mysqli_query($con, $sql );
+  			@$regs=mysqli_num_rows(mysqli_query($con, $sql));
+	      if ($regs>0) {
+  				while ($notaMarginal=mysqli_fetch_assoc($result)) {
+  					$txnotamar=$txnotamar.utf8_encode($notaMarginal['txnotamar'])." ; ";
+    				}
+  			}
 
+  			$base='notas';
 
-				$sql = "SELECT * FROM notas WHERE numSolicitud = $solicitud";
-				$resultnp = mysqli_query($con, $sql);
+  			$sql = "SELECT * FROM $base WHERE clave='$clave'";
+  			$result = mysqli_query($con, $sql );
+  			@$regs=mysqli_num_rows(mysqli_query($con, $sql));
+  			$txnotapie="";
+  			$txpara="";
 
-				if ($resultnp) {
-					$reg_sol=mysqli_fetch_assoc($resultnp);
-					$txnotapie=utf8_encode($reg_sol['notaPie']);
-				}else{
-					$txnotapie="Valida para tramitar matrimonio en la Parroquia de ";
-				}
+  			if ($regs>0) {
+  					while ($nota=mysqli_fetch_assoc($result)) {
 
+  						switch ($nota['para']) {
+  							case '1':
+  								$codpara='Matrimonio';
 
+  										$txnotapie=$txnotapie.utf8_encode($nota['notaPie']);
+  								
+  								break;
+  							case '2':
+  								$codpara='Confirmación';
+  								break;
+  							case '3':
+  								$codpara='Comunión';
+  								break;
+  							case '4':
+  								$codpara='Orden';
+  								break;
 
-
-			}else{
-				$txnotamar="";
+  							default:
+  								$codpara='otros';
+  								break;
+  						}
+  						$txpara=$txpara.$nota['numSolicitud']." - ".$codpara." ";
+  					}
+  			}
+			else{
 				$txnotapie="Valida para tramitar matrimonio en la Parroquia de ";
 			}
 		}
@@ -308,7 +328,7 @@ $clave=$_POST['clave'];
 
 
   	</td>
-		<td><textarea class='entradatx' rows='4' cols='50' name='txnotamar'>".$txnotamar."</textarea></td>"."	<td>Nota al pie:</td><td><textarea class='entradatx' rows='4' cols='50' name='notapie'>".$txnotapie." </textarea></td></tr></table>";
+		<td><textarea class='entradatx' rows='4' cols='50' name='txnotamar'>".$txnotamar."</textarea></td>"."	<td>Nota al pie:</td><td><textarea class='entradatx' rows='4' cols='50' name='notapie'>".$txnotapie." </textarea><br>".$txpara."</td></tr></table>";
 	}
 
 ?>

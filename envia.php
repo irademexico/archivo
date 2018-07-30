@@ -45,6 +45,7 @@
             <input  class="submitTop" type="submit" name="newsol" onclick="enviab('cap_solicitudes.php')" value="Nueva Solicitud" >
             <input  class="submitTop" type="submit" name="sube" onclick="enviab('envia.php')" value="Envia a USB"  >
             <input  class="submitTop" type="submit" name="feccon" onclick="enviab('fechascon.php')" value="Fechas de Confirmacion" >
+            <input  class="submitTop" type="submit" name="feccon" onclick="enviab('recuSol.php')" value="Recupera Solicitudes" >
         </form>
     </header>
 

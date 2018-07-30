@@ -1,10 +1,10 @@
-<?php  
+<?php
 	$con=new mysqli("localhost","root","","sagrario");
 	if ($con->connect_errno){
 	    echo "conexion erronea";
 	    exit();
 	}
-	
+
 	$base='last_solic';
 	$sql="SELECT * FROM $base";
 	$result= $con->query($sql);
@@ -23,7 +23,7 @@
 	$fecent=date("Y-m-d",$fecent);
 	$hoy=date('Y-m-d');
 
-	
+
 	$base='solicitudes';
 	$sql="SELECT  * FROM $base WHERE numSolicitud = $numSolicitud";
 	$result = mysqli_query($con, $sql);
@@ -51,15 +51,20 @@
 		    <link href="img/favicon.ico" rel="icon" type="image/png" />
 
 		    <link rel="stylesheet" type="text/css" href="css/style.css">
-		    
+
 		</head>
-		<body>  
+		<SCRIPT language="JavaScript" type="text/javascript">
+		function regresa(){
+			alert("no hay solicitudes para corregir")
+		}
+		</script>
+		<body>
 
 		    <header >
 		        SAGRARIO METROPOLITANO<br>
 		        Sistema Archivo
 
-		        <form class="formTop" name="form" method="POST" action=''>
+		        <form class="formTop" name="form" method="POST" action="cap_solicitudes.php">
 		            <input class="submitTop" type="submit" name="busca" onclick="enviab('buscasol.php')" value="Corregir"  >
 		            <input  class="submitTop" type="submit" name="newsol" onclick="enviab('cap_solicitudes.php')" value="Nueva Solicitud" >
 		            <input  class="submitTop" type="submit" name="sube" onclick="enviab('envia.php')" value="Envia a USB"  >
@@ -86,9 +91,9 @@ if ($regs==0) {
 	$checked9="";
 	$func="";
 
-    while ($consulta= mysqli_fetch_array($result)) 
+    while ($consulta= mysqli_fetch_array($result))
 	{
- 
+
 
 		if ($consulta['solicitud']== 1) {
 	  		$sol=1;
@@ -110,7 +115,7 @@ if ($regs==0) {
 	        $checked3="checked";
 	        $func="javascript:myVisible3()";
 	  	}
-  
+
 		if ($consulta['simple']== 1) {
         	$checked4="checked";
   		}else{
@@ -168,7 +173,7 @@ if ($regs==0) {
 			case '4':
 				$chekparaP="checked";
 				break;
-			
+
 			default:
 				$chekparaO="checked";
 				break;
@@ -180,7 +185,7 @@ if ($regs==0) {
 <?php echo $numSol;?>
 
 <form action="imp_solicitud.php" method="POST" target="_blank">
-	
+
 	<table >
 		<tr width="640">
 			<td width="150">
@@ -199,23 +204,23 @@ if ($regs==0) {
 			</td>
 			<td width="500" >
 				<article id="fMatri" style="height: 60px">
-					
+
 					<input type="radio" name="para" value="1" <?php echo $chekparaM; ?>/>p/ Matrimonio
 					<input type="radio" name="para" value="2" <?php echo $chekparaC; ?>/>p/ Comunión
 					<input type="radio" name="para" value="3" <?php echo $chekparaF; ?>/>p/ Confirmación<br>
 					<input type="radio" name="para" value="4" <?php echo $chekparaP; ?>/>para Padrino-Madrina
 					<input type="radio" name="para" value="5" <?php echo $chekparaO; ?>/>para otros
 				</article>
-			</td>				
+			</td>
 		</tr>
 	</table>
-	
-	
+
+
 	<article id="fNombre" style="white-space: wrap; overflow: hidden;visibility: visible; align-content: left;">
 		<table>
 			<tr width="600">
 				<td style="padding: 10 10 10 10;">
-			
+
 					Nombre:<input class="entradatx" type="text" name="nombre"  width="25" value="<?php echo $nombre;?>">
 				</td>
 				<td style="padding: 10 10 10 10;">
@@ -246,7 +251,7 @@ if ($regs==0) {
 				Padre:<input  class="entradatx" type="text" id="input2" name="padre" size="50" value="<?php echo $padre;?>">
 			</td>
 			<td style="padding: 10 10 10 10;">
-				Madre:<input  class="entradatx" type="text" id="input4" name="madre" size="50" value="<?php echo $madre;?>">					
+				Madre:<input  class="entradatx" type="text" id="input4" name="madre" size="50" value="<?php echo $madre;?>">
 			</td>
 		</tr>
 	</table>
@@ -258,15 +263,15 @@ if ($regs==0) {
 				Padrino:<input  class="entradatx" type="text" name="padrino" size="50" value="<?php echo $padrino;?>">
 			</td>
 			<article>
-					
-					
+
+
 			<td id="fMadrina" style="padding: 10 10 10 10;">
-				<?php 
+				<?php
 			if ($sol=1) {
 				echo "
 				Madrina:<input  class='entradatx' type='text' name='madrina' size='50' value='".$madrina."'>";
 			}
-			?>					
+			?>
 			</td></article>
 		</tr>
 	</table>
@@ -275,7 +280,7 @@ if ($regs==0) {
 		<table width="600">
 			<tr >
 				<td align="right" style="padding: 10 10 10 10;">Fecha del sacramento:
-					
+
 				</td>
 				<td style="padding: 10 10 10 10;" >
 					<input  class='entrada' type="date" name="fecSacr" value="<?php echo $fecSacr;?>">
@@ -301,29 +306,29 @@ if ($regs==0) {
 						<br>
 						<div id='hasta'>Busqueda hasta:<br>
 						<input  class='entrada' type='date'  name='fecAprox' value='<?php echo $fecAprox; ?>' /> </div>
-				
+
 
 			</td>
 			<td width="150" style="padding: 10 10 10 10;">
 				Fecha de Entrega: <?php echo "<input  class='entrada'  type='date'  name='fecEntrega' value='".$fecent."' />"; ?></td><TD>
 				<input type="hidden" name="hoy" value="<?php echo $hoy;?>">
-				
+
 				<input class="submitDown" type="submit" value="Imprimir">
 			</td>
 
 		</tr>
 	</table>
-		
+
 	</article>
 	<p align="center">
 	<tr>
-		
+
 	</tr>
 	</p>
 </form>
 </section>
 	<script type="text/javascript">
-			
+
 			function myVisible(){
 				document.getElementById("fBautismo").style.visibility = 'visible';
 				document.getElementById("fNombre").style.visibility = 'visible';
@@ -371,11 +376,12 @@ if ($regs==0) {
 				}
 			}
 	</script>
-	<SCRIPT LANGUAGE="JavaScript">
-	function enviab(pag){ 
-		document.form.action= pag 
-		document.form.submit() 
-	} 
+	<SCRIPT language="JavaScript" type="text/javascript">
+
+	function enviab(pag){
+		document.form.action= pag
+		document.form.submit()
+	}
 	    $(document).ready(function () {
         $("#input1").keyup(function () {
             var value = $(this).val();
@@ -396,6 +402,7 @@ if ($regs==0) {
     </footer>
 </body>
 </html>
-<?php 
+<?php
 }
+
  ?>

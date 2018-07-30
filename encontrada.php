@@ -4,6 +4,11 @@
   $numSolicitud=$_GET['ns'];
   @$para=$_GET['para'];
 
+  $checkmt="";
+			$checkcf="";
+			$checkcm="";
+			$checkor="";
+
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +37,7 @@
 			<input class="submitTop" type="button" name="inicio" onclick="enviab('index.php')" value="Inicio"   >
 			<input  class="submitTop"  type="button" name="archivo" onclick="enviab('archivo.php')" value="Archivo"  >
 
-			||<input class="entradaMenu"  type="text" name="clave" placeholder="Clave L-F-A">
+			||<input class="entradaMenu"  type="text" name="clave" placeholder="L-F-A">
 			<input  class="submitTop"  type="submit" name="busca" onclick="enviab('busca.php')" value="Buscar"  >||
 			<input class="submitTop"   type="button" name="solic_local" onclick="enviab('solic_local.php')" value="Solicitudes"  >
 			<input class="submitTop"   type="button" name="buscara" onclick="enviab('buscara.php')" value="Busqueda"   >
@@ -51,10 +56,32 @@
 		}
 
 		$basenota='notas';
-		$sql="SELECT * FROM $basenota WHERE numSolicitud=$numSolicitud";
+		$sql="SELECT * FROM $basenota WHERE clave='$clave'";
 		$result=mysqli_query($con, $sql);
 		$regs=mysqli_num_rows(mysqli_query($con, $sql));
-		$nota=mysqli_fetch_assoc($result);
+//echo "notas=".$regs;
+
+		$notaPiex="";
+		$notaPiey="";
+
+		while ($nota=mysqli_fetch_assoc($result)) {
+			if (is_numeric($nota['notaPie'])) {
+				if ($nota['notaPie']==2) {
+					 $txnota="Comunión";
+				}elseif ($nota['notaPie']==3) {
+					 $txnota="Confirmación";
+				}elseif ($nota['notaPie']==4) {
+					 $txnota="Padrino-Madrina";
+				}
+				else{
+					$txnota="Otro";
+				}
+				$notaPiex=$notaPiex.$nota['numSolicitud']."-".$txnota."; ";
+			}else{
+				$notaPiey=$notaPiey.utf8_decode($nota['notaPie'])."; ";
+			}
+		}
+
     //echo "Nota Pie regs".$regs;
 		if ($regs==0) {
 		      if ($para==1) {
@@ -63,7 +90,9 @@
 		        $notaPie="";
 		      }
 		}else{
-			$notaPie=$nota['notaPie'];
+
+			$notaPie=$notaPiey;
+
 		}
 
 		$clave1=substr($clave,0,1);
@@ -301,16 +330,27 @@
 ?>
 </table>
 <table><tr>
+
+
 <?php
 	if ($base=='bautismo') {
-		echo "<td>Nota marginal:</td><td><input class='entrada' type='text' name='notamar' size='1'  maxlenght='1' value='".$registro['notamar']."'></td>
+		echo "<td>
+    <input type='hidden' name='notam' value='0' checked >
+		<input type='checkbox' name='notam' value='1'  >Matrimonio<br>
+		<input type='checkbox' name='notam' value='2'  >Confirmación<br>
+		<input type='checkbox' name='notam' value='3'  >Comunión<br>
+		<input type='checkbox' name='notam' value='4'  >Orden<br>
+
+
+	</td>
     <td><textarea class='entradatx' rows='4' cols='50' name='txnotamar'>".utf8_encode($txnotamar)."</textarea></td>"."
     <td>Nota al pie:</td><td><textarea class='entradatx' rows='4' cols='50' name='notapie'>".utf8_encode($notaPie)." </textarea></td></tr></table>";
+    echo "<tr><td></td><td></td><td></td><td></td><td>".$notaPiex."</td></tr>";
 	}
 
 ?>
 
-		<input type='submit' name='' value='Imprimir'>
+		<p><input type='submit' name='' value='Imprimir'></p>
 	</form>
 
 	<SCRIPT LANGUAGE="JavaScript">

@@ -133,7 +133,7 @@ while ($consulta= mysqli_fetch_array($listasol))
           @$mesfn=substr($buscabase['fechaNac'],5,2);
           @$diafn=substr($buscabase['fechaNac'],8,2);
 
-          echo "<tr style='color:#330033;font-size: 1.2em; height:90px; background:#ccccee;'><td>Base Datos <br> BAUTISMOS<br>".$buscabase['solicitud'] ."</td> <td>".$buscabase['nombre']." ".$buscabase['paterno']." " . $buscabase['materno'] ."</td><td>".$buscabase['padre']."<br>".$buscabase['madre']."</td> <td>".$buscabase['padrino']."<br>".$buscabase['madrina']."</td>";
+          echo "<tr style='color:#330033;font-size: 1.2em; height:90px; background:#ccccee;'><td>Base Datos <br> BAUTISMOS<br>".$buscabase['solicitud'] ."</td> <td>".utf8_encode($buscabase['nombre'])." ".utf8_encode($buscabase['paterno'])." " . utf8_encode($buscabase['materno']) ."</td><td>".utf8_encode($buscabase['padre'])."<br>".utf8_encode($buscabase['madre'])."</td> <td>".utf8_encode($buscabase['padrino'])."<br>".utf8_encode($buscabase['madrina'])."</td>";
           echo "<td>".$diafn."-".$mesfn."-".$anofn."</td> <td colspan='2'>". $buscabase['clave']." </td> <td style='width: 7%;'><a href='encontrada.php?clave=".$buscabase['clave']."&ns=".$consulta['numSolicitud']."&para=".$consulta['para']."'><button>Encontrada</button></a> </td> </tr>";
 
           ++$idclave;
@@ -181,7 +181,7 @@ while ($consulta= mysqli_fetch_array($listasol))
       {
           $arrclave[$idclave]= $buscabase['clave'];
 
-          echo "<tr style='height:90px; color:#330033;font-size:1.2em;background-color:#ccccee'; ><td>".$buscabase['solicitud'] ."</td> <td>".$buscabase['nombre']." ".$buscabase['paterno']." " . $buscabase['materno'] ."</td><td>".$buscabase['padre']."<br>".$buscabase['madre']."</td> <td>".$buscabase['padrino']."</td> <td>".$buscabase['fechanac']."</td><td colspan='2'>".$buscabase['clave']."</td><td style='width: 7%;'><a href='encontrada.php?clave=".$buscabase['clave']."&ns=".$consulta['numSolicitud']."'><button>Encontrada</button></a> </td> </tr> ";
+          echo "<tr style='height:90px; color:#330033;font-size:1.2em;background-color:#ccccee'; ><td>".$buscabase['solicitud'] ."</td> <td>".utf8_encode($buscabase['nombre'])." ".utf8_encode($buscabase['paterno'])." " . utf8_encode($buscabase['materno']) ."</td><td>".utf8_encode($buscabase['padre'])."<br>".utf8_encode($buscabase['madre'])."</td> <td>".utf8_encode($buscabase['padrino'])."</td> <td>".$buscabase['fechanac']."</td><td colspan='2'>".$buscabase['clave']."</td><td style='width: 7%;'><a href='encontrada.php?clave=".$buscabase['clave']."&ns=".$consulta['numSolicitud']."'><button>Encontrada</button></a> </td> </tr> ";
 
           ++$idclave;
       }

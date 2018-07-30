@@ -83,7 +83,7 @@ if (empty($reg)||$reg==0) {
     <!-- Always force latest IE rendering engine or request Chrome Frame -->
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title></title>
+	<title>Captura Sacramento</title>
     <meta name="description" content="Archivo Sagrario Metropolitano" />
     <meta name="keywords" content="sagrario, metropolitano" />
     <link href="css/normalize.css" rel="stylesheet" type="text/css" />
@@ -180,9 +180,52 @@ if (empty($reg)||$reg==0) {
 				$xanocon="";//con
 				$xdiacon="";//con
 				$xmescon="";//con
+
+				$txnotamar="";
+				$txnotapie="";
+				$txpara="";
+				$base='notas_marg';
+				$sql = "SELECT * FROM $base WHERE clave='".$clave."'";
+				$result = mysqli_query($con, $sql );
+				@$regs=mysqli_num_rows(mysqli_query($con, $sql));
+				if ($regs>0) {
+					while ($notaMarginal=mysqli_fetch_assoc($result)) {
+						$txnotamar=$txnotamar.utf8_encode($notaMarginal['txnotamar'])." ; ";
+					}
+				}
+				$base='notas';
+				$sql = "SELECT * FROM $base WHERE clave='$clave'";
+				$result = mysqli_query($con, $sql );
+				$regs=mysqli_num_rows(mysqli_query($con, $sql));
+				if ($regs>0) {
+						while ($nota=mysqli_fetch_assoc($result)) {
+								switch ($nota['para']) {
+								case '1':
+									$codpara='Matrimonio';
+									if ($para==1) {
+											$txnotapie=$txnotapie.utf8_encode($nota['notaPie']);
+									}
+									break;
+								case '2':
+									$codpara='Confirmación';
+									break;
+								case '3':
+									$codpara='Comunión';
+									break;
+								case '4':
+									$codpara='Orden';
+									break;
+
+								default:
+									$codpara='otros';
+									break;
+							}
+							$txpara=$txpara.$nota['numSolicitud']." - ".$codpara." ";
+						}
+				}
+
 			}elseif ($solicitud==2) {
 				$apMaterno=utf8_encode($registro['materno']);//con
-
 				$apPaterno=utf8_encode($registro['paterno']);//con
 				$esposa="";
 				$esposo="";
@@ -357,42 +400,23 @@ if (empty($reg)||$reg==0) {
 </table>
 <table><tr>
 <?php
-	if ($para==1) {
+	if ($para==1 AND empty($notaPie)) {
 		$notaPie="Valida para tramitar matrimonio en la parroquia de";
 		$txpara="";
 	}
-	elseif ($para==2) {
-		$notaPie="";
-		$txpara="Comunión";
-	}
-	elseif ($para==3) {
-		$notaPie="";
-		$txpara="Confirmación";
-	}elseif ($para==4) {
-		$notaPie="";
-		$txpara="Padrino-Madrina";
-	}
-	else
-	{
-		$txpara="otros";
-		$notaPie="";
-	}
-
 
 	if ($solicitud==1) {
 		echo "<td>Nota marginal:</td><td>
 				<input type='hidden' name='notam' value=0 checked>
-				<input type='checkbox' name='notam' value=1 <?php echo $checkmt; ?> >Matrimonio<br>
-				<input type='checkbox' name='notam' value=2 <?php echo $checkcf; ?> >Confirmación<br>
-				<input type='checkbox' name='notam' value=3 <?php echo $checkcm; ?> >Comunión<br>
-				<input type='checkbox' name='notam' value=4 <?php echo $checkor; ?> >Orden<br></td>
+				<input type='checkbox' name='notam' value=1  >Matrimonio<br>
+				<input type='checkbox' name='notam' value=2  >Confirmación<br>
+				<input type='checkbox' name='notam' value=3  >Comunión<br>
+				<input type='checkbox' name='notam' value=4  >Orden<br></td>
 				<td><textarea class='entradaarea' rows='4' cols='50' name='txnotamar'></textarea></td>"."	<td>Nota al pie:</td><td><textarea class='entradaarea' rows='4' cols='50' name='notapie'>".$notaPie."</textarea></td></tr></table>";
 		echo "<tr>
 		<td></td><td></td><td></td><td></td><td>Para: ".$txpara."</td>
 	</tr>";
 		echo "<input type='hidden' name='clave' value='".$clave."' visible='hidden'>";
-
-
 
 	}elseif ($solicitud==2) {
 
