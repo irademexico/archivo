@@ -426,14 +426,12 @@ if (empty($reg)||$reg==0) {
 		<td>Bautizado el: </td>
 		<td><input class='entradatx' type="date" name="fechabau" size="10">
 			<br><input class='entradatx' type="text" name="xdiacon" size="2" placeholder="xdia"><input class='entradatx' type="text" name="xmescon" size="10" placeholder="xmes"><input class='entradatx' type="text" name="xanocon" size="2" placeholder="xaño"></td>
-		<td>en:</td>
-		<td><input class='entradatx' type="text" name="parrbau" maxlength="50" size="50"></td>
-		<td>de:</td>
-		<td><input class='entradatx' type="text" name="lugarbau" maxlength="50" size="50"></td>
+		<td>en:<input class='entradatx' type="text" name="parrbau" maxlength="50" size="50" placeholder="parroquia de bautismo">
+			<br>de:<input class='entradatx' type="text" name="lugarbau" maxlength="50" size="50" placeholder="entidad-colonia"></td>
 	</tr>
 	<tr>
 		<td>datos:</td>
-		<td><input class='entradatx' type="text" name="librobau" size="20" placeholder="l.a. de bau"></td>
+		<td><input class='entradatx' type="text" name="librobau" size="20" placeholder="lib.acta de bautismo"></td>
 	</tr>
 
 </table>

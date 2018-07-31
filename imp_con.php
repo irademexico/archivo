@@ -128,7 +128,7 @@ $result = mysqli_query($con, $actualiza);
         $actualiza="UPDATE  $base SET actaab='$actaab' WHERE clave=$clave";
         $result = mysqli_query($con, $actualiza);
     }
-    $confirmo=($_POST['ministro']);
+    $confirmo=utf8_decode($_POST['ministro']);
     if (! empty($confirmo)) {
         $actualiza="UPDATE  $base SET ministro='$confirmo' WHERE clave=$clave";
         $result = mysqli_query($con, $actualiza);
@@ -168,27 +168,27 @@ $result = mysqli_query($con, $actualiza);
         $actualiza="UPDATE  $base SET librobis='$librobis' WHERE clave=$clave";
         $result = mysqli_query($con, $actualiza);
     }
-    $lugarbau=($_POST['lugarbau']);
+    $lugarbau=utf8_decode($_POST['lugarbau']);
     if (! empty($lugarbau)) {
         $actualiza="UPDATE  $base SET lugarbau='$lugarbau' WHERE clave=$clave";
         $result = mysqli_query($con, $actualiza);
     }
-    $lugarnac=($_POST['lugarnac']);
+    $lugarnac=utf8_decode($_POST['lugarnac']);
     if (! empty($lugarnac)) {
         $actualiza="UPDATE  $base SET lugarnac='$lugarnac' WHERE clave=$clave";
         $result = mysqli_query($con, $actualiza);
     }
-    $madre = ($_POST["madre"]);
+    $madre = utf8_decode($_POST["madre"]);
     if (! empty($madre)) {
-        $actualiza="UPDATE  $base SET madre='$madre' WHERE clave=$clave";
+        $actualiza="UPDATE  $base SET madre = '$madre' WHERE clave=$clave";
         $result = mysqli_query($con, $actualiza);
     }
-    $materno  = ($_POST["materno"]);
+    $materno  = utf8_decode($_POST["materno"]);
     if (! empty($materno)) {
         $actualiza="UPDATE  $base SET materno='$materno' WHERE clave=$clave";
         $result = mysqli_query($con, $actualiza);
     }
-    $nombre = ($_POST["nombre"]);
+    $nombre = utf8_decode($_POST["nombre"]);
     if (! empty($nombre)) {
         $actualiza="UPDATE  $base SET nombre='$nombre' WHERE clave=$clave";
         $result = mysqli_query($con, $actualiza);
@@ -199,22 +199,22 @@ $result = mysqli_query($con, $actualiza);
         $actualiza="UPDATE  $base SET hijoa='$oa' WHERE clave=$clave";
         $result = mysqli_query($con, $actualiza);
     }
-    $padre  = ($_POST["padre"]);
+    $padre  = utf8_decode($_POST["padre"]);
     if (! empty($padre)) {
         $actualiza="UPDATE  $base SET padre='$padre' WHERE clave=$clave";
         $result = mysqli_query($con, $actualiza);
     }
-    $padrino = ($_POST["padrino"]);
+    $padrino = utf8_decode($_POST["padrino"]);
     if (! empty($padrino)) {
         $actualiza="UPDATE  $base SET padrino='$padrino' WHERE clave=$clave";
         $result = mysqli_query($con, $actualiza);
     }
-    $parrbau  =($_POST["parrbau"]);
+    $parrbau  =utf8_decode($_POST["parrbau"]);
     if (! empty($parrbau)) {
-        $actualiza="UPDATE  $base SET parrbau='$parrbau' WHERE clave=$clave";
+      $actualiza="UPDATE  $base SET parrbau='$parrbau' WHERE clave=$clave";
         $result = mysqli_query($con, $actualiza);
     }
-    $paterno  =($_POST["paterno"]);
+    $paterno  =utf8_decode($_POST["paterno"]);
     if (! empty($paterno)) {
         $actualiza="UPDATE  $base SET paterno='$paterno' WHERE clave=$clave";
         $result = mysqli_query($con, $actualiza);
@@ -357,7 +357,7 @@ $pdf->Write(1, utf8_decode($padre));
 
 $pdf->ln(8);
 $pdf->SetX(68);
-$pdf->Write(1, utf8_decode($madre));
+$pdf->Write(1, ($madre));
 
 $pdf->ln(9);
 $pdf->SetX(88);

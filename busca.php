@@ -58,13 +58,15 @@ $clave=$_POST['clave'];
 				$base="bautismo";
 				break;
 		}
-
+ //echo $base;
+ echo "<p>";
 		$sql = "SELECT * FROM $base WHERE clave = '".$clave."'";
-		$result = mysqli_query($con, $sql) or die('no consulto clave'.error_log());
+		$result = mysqli_query($con, $sql) ;
 		$regs=mysqli_num_rows(mysqli_query($con, $sql));
 		//echo $regs." registros de ".$base;
 		$registro=mysqli_fetch_assoc($result);
 
+  //  echo $registro['partidan'];
 
 
 		if ($clave1=='c') {
@@ -129,8 +131,8 @@ $clave=$_POST['clave'];
 			}
 
         $txnotamar="";
-  			$base='notas_marg';
-  			$sql = "SELECT * FROM $base WHERE clave='".$clave."'";
+  			$basenm='notas_marg';
+  			$sql = "SELECT * FROM $basenm WHERE clave='".$clave."'";
   			$result = mysqli_query($con, $sql );
   			@$regs=mysqli_num_rows(mysqli_query($con, $sql));
 	      if ($regs>0) {
@@ -139,9 +141,9 @@ $clave=$_POST['clave'];
     				}
   			}
 
-  			$base='notas';
+  			$basen='notas';
 
-  			$sql = "SELECT * FROM $base WHERE clave='$clave'";
+  			$sql = "SELECT * FROM $basen WHERE clave='$clave'";
   			$result = mysqli_query($con, $sql );
   			@$regs=mysqli_num_rows(mysqli_query($con, $sql));
   			$txnotapie="";
@@ -155,7 +157,7 @@ $clave=$_POST['clave'];
   								$codpara='Matrimonio';
 
   										$txnotapie=$txnotapie.utf8_encode($nota['notaPie']);
-  								
+
   								break;
   							case '2':
   								$codpara='Confirmación';
